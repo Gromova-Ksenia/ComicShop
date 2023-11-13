@@ -2,14 +2,14 @@ package org.example.shop.assortiment;
 
 import org.example.comicinfo.Comic;
 
-public class Assortment {
+public class AssortmentPosition {
     private Comic comic;
     private int available;
 
-    public Assortment() {
+    public AssortmentPosition() {
     }
 
-    public Assortment(Comic comic, int available) {
+    public AssortmentPosition(Comic comic, int available) {
         this.comic = comic;
         this.available = available;
     }
@@ -28,5 +28,17 @@ public class Assortment {
 
     public void setAvailable(int available) {
         this.available = available;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == this) return true;
+        if (object == null) return false;
+        if (object.getClass() != this.getClass()) return false;
+        return ((((AssortmentPosition) object).getComic().getName() == this.comic.getName()) &&
+                (((AssortmentPosition) object).getComic().getAuthor() == this.comic.getAuthor()));
+    }
+    public String toString() {
+       return ("Название: " + this.comic.getName() + "\nАвтор: " + this.comic.getAuthor().getName() + "\nВ наличии: " + this.available);
     }
 }

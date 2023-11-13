@@ -1,4 +1,9 @@
-package org.example;
+package org.example.comicinfo;
+
+import org.example.comicinfo.author.Author;
+import org.example.comicinfo.author.AuthorManage;
+import org.example.comicinfo.series.Series;
+import org.example.comicinfo.series.SeriesManage;
 
 public class Comic {
     private String name;
@@ -26,6 +31,7 @@ public class Comic {
         this.inASeries = false;
         this.series = null;
     }
+
     public Comic(String name, Author author, String publisher, int numberOfPages, String genre,
                  int releaseYear, float costPrice, float sellingPrice, boolean isASequel, boolean inASeries) {
         this.name = name;
@@ -39,8 +45,24 @@ public class Comic {
         this.isASequel = isASequel;
         this.inASeries = inASeries;
     }
+
+    public Comic(String name, String authorName, String publisher, int numberOfPages, String genre,
+                 int releaseYear, float costPrice, float sellingPrice, boolean isASequel, boolean inASeries) {
+        this.name = name;
+        this.publisher = publisher;
+        this.numberOfPages = numberOfPages;
+        this.genre = genre;
+        this.releaseYear = releaseYear;
+        this.costPrice = costPrice;
+        this.sellingPrice = sellingPrice;
+        this.isASequel = isASequel;
+        this.inASeries = inASeries;
+        AuthorManage authorManage = new AuthorManage();
+        this.author = authorManage.newAuthor(authorName, this);
+    }
+
     public Comic(String name, Author author, String publisher, int numberOfPages, String genre,
-                 int releaseYear, float costPrice, float sellingPrice, boolean isASequel, boolean inASeries, Series series) {
+                 int releaseYear, float costPrice, float sellingPrice, boolean isASequel, boolean inASeries, String seriesName) {
         this.name = name;
         this.author = author;
         this.publisher = publisher;
@@ -51,15 +73,32 @@ public class Comic {
         this.sellingPrice = sellingPrice;
         this.isASequel = isASequel;
         this.inASeries = inASeries;
-        this.series = series;
+        SeriesManage seriesManage = new SeriesManage();
+        this.series = seriesManage.newSeries(seriesName,author,this);
+    }
+    public Comic(String name, String authorName, String publisher, int numberOfPages, String genre,
+                 int releaseYear, float costPrice, float sellingPrice, boolean isASequel, boolean inASeries, String seriesName) {
+        this.name = name;
+        this.publisher = publisher;
+        this.numberOfPages = numberOfPages;
+        this.genre = genre;
+        this.releaseYear = releaseYear;
+        this.costPrice = costPrice;
+        this.sellingPrice = sellingPrice;
+        this.isASequel = isASequel;
+        this.inASeries = inASeries;
+        AuthorManage authorManage = new AuthorManage();
+        this.author = authorManage.newAuthor(authorName, this);
+        SeriesManage seriesManage = new SeriesManage();
+        this.series = seriesManage.newSeries(seriesName,author,this);
     }
 
-
-    public String toString(){
-        return ("Название: " + this.name + "\nАвтор: " + this.author.getName() + "\nИздательство: " + this.publisher +
+    @Override
+    public String toString() {
+        return ("\nНазвание: " + this.name + "\nАвтор: " + this.author.getName() + "\nИздательство: " + this.publisher +
                 "\nКоличество страниц: " + this.numberOfPages + "\nЖанр: " + this.genre + "\nГод релиза: " + this.releaseYear +
                 "\nСебестоимость: " + this.costPrice + "\nСтоимость продажи: " + this.sellingPrice +
-                (isASequel?"\nСиквел":"\nНе сиквел") + (inASeries?this.series.getSeriesName():"Не является частью серии."));
+                (isASequel ? "\nСиквел." : "\nНе сиквел.") + (inASeries ? ("\nВ серии: " + this.series.getSeriesName()) : "\nНе является частью серии."));
     }
 
     public String getName() {
@@ -126,7 +165,7 @@ public class Comic {
         this.sellingPrice = sellingPrice;
     }
 
-    public boolean isASequel() {
+    public boolean getASequel() {
         return isASequel;
     }
 
@@ -140,6 +179,7 @@ public class Comic {
 
     public void setInASeries(boolean inASeries) {
         this.inASeries = inASeries;
+        if (!inASeries) this.series = null;
     }
 
     public Series getSeries() {

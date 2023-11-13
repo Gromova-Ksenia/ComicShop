@@ -1,4 +1,6 @@
-package org.example.comicinfo;
+package org.example.comicinfo.author;
+
+import org.example.comicinfo.Comic;
 
 import java.util.ArrayList;
 
@@ -22,6 +24,15 @@ public class Author {
         if (object == null) return false;
         if (object.getClass() != this.getClass()) return false;
         return ((((Author) object).name == this.name) && (((Author) object).comicPublished == this.comicPublished));
+    }
+
+    @Override
+    public String toString() {
+        String authorPrint = "\nАвтор: " + this.name + "\nСписок работ:\n";
+        for (int i=0; i<this.comicPublished.size();i++){
+            authorPrint+= this.comicPublished.get(i).getName() + "\n";
+        }
+        return (authorPrint);
     }
 
     public String getName() {

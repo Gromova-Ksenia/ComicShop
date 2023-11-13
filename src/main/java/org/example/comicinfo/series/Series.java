@@ -1,5 +1,6 @@
-package org.example.comicinfo;
+package org.example.comicinfo.series;
 
+import org.example.comicinfo.Comic;
 import org.example.comicinfo.author.Author;
 
 import java.util.HashMap;
@@ -26,7 +27,7 @@ public class Series {
         if (object == this) return true;
         if (object == null) return false;
         if (object.getClass() != this.getClass()) return false;
-        return ((((Series) object).seriesName == this.seriesName) && (((Series) object).seriesAuthor == this.seriesAuthor) &&
+        return ((((Series) object).seriesName == this.seriesName) && (((Series) object).seriesAuthor.getName().toLowerCase() == this.seriesAuthor.getName()) &&
                 (((Series) object).comicInSeries == this.comicInSeries));
     };
 
@@ -38,6 +39,9 @@ public class Series {
         this.seriesName = seriesName;
     }
 
+    public void setComicInSeries(HashMap<Byte, Comic> comicInSeries) {
+        this.comicInSeries = comicInSeries;
+    }
     public HashMap<Byte, Comic> getComicInSeries() {
         return comicInSeries;
     }
@@ -48,13 +52,6 @@ public class Series {
 
     public void setSeriesAuthor(Author seriesAuthor) {
         this.seriesAuthor = seriesAuthor;
-    }
-
-    public void addComicToSeries(byte numberInSeries, Comic comic) {
-        if (this.comicInSeries == null) {
-            this.comicInSeries = new HashMap<>();
-            this.comicInSeries.put(numberInSeries, comic);
-        }
     }
 
     @Override
