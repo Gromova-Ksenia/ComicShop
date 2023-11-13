@@ -39,8 +39,9 @@ public class Series {
         this.seriesName = seriesName;
     }
 
-    public void setComicInSeries(HashMap<Byte, Comic> comicInSeries) {
+    public void setComicInSeries(HashMap<Byte, Comic> comicInSeries, Comic comic) {
         this.comicInSeries = comicInSeries;
+        this.comicInSeries.put((byte)(comicInSeries.size()+1), comic);
     }
     public HashMap<Byte, Comic> getComicInSeries() {
         return comicInSeries;

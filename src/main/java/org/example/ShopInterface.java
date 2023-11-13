@@ -1,67 +1,99 @@
 package org.example;
 
 import org.example.comicinfo.Comic;
-import org.example.shop.Shop;
 import org.example.shop.ShopManage;
 
 import java.util.Scanner;
 
-public class Interface {
+public class ShopInterface {
     public ShopManage shopManage;
 
+    public ShopInterface() {
+    }
+
+    public ShopInterface(ShopManage shopManage) {
+        this.shopManage = shopManage;
+    }
+
+    //Вывод основного меню
     public void printMainMenu() {
-        System.out.println("\nЧто вы хотите? \n1. Поиск комикса \n2. Продажа комикса \n3. Пополнение ассортимента \n4. Списание комикса");
+        System.out.print("\nЧто вы хотите? \n1. Вывести ассортимент комиксов\n2. Вывести все серии комиксов" +
+                " \n3. Поиск комикса \n4. Продажа комикса \n5. Пополнение ассортимента \n6. Списание комикса\n7. Завершение работы\nВыберите: ");
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
-        while (!(choice >= 1 && choice <= 4)) {
+        while (choice != 7) {
             choice = scanner.nextInt();
             switch (choice) {
                 case 1:
-                    this.comicSearch();
+                    this.shopManage.shop.assortmentManage.showAssortment();
+                    this.printMainMenu();
                     break;
                 case 2:
-                    String comicName, authorName;
-                    int quantityToSell;
-                    System.out.println("Введите название комикса: ");
-                    comicName = scanner.next();
-                    System.out.println("Введите имя автора: ");
-                    authorName = scanner.next();
-                    System.out.println("Введите количество экземпляров для покупки: ");
-                    quantityToSell = scanner.nextInt();
-                    this.shopManage.sellComic(comicName, authorName, quantityToSell);
+                    this.shopManage.shop.seriesManage.printAllSeries();
                     break;
                 case 3:
-                    System.out.println("Введите название комикса: ");
-                    int price = scanner.nextInt();
-                    System.out.println("Введите название комикса: ");
-                    int quantityToBuy = scanner.nextInt();
-                    if (this.shopManage.canBuyNewComic(price, quantityToBuy)) this.gotNewComic(price, quantityToBuy);
+                    this.comicSearch();
+                    this.printMainMenu();
                     break;
                 case 4:
+                    String comicName, authorName;
+                    int quantityToSell;
+                    System.out.print("Введите название комикса: ");
+                    comicName = scanner.next();
+                    System.out.print("Введите имя автора: ");
+                    authorName = scanner.next();
+                    System.out.print("Введите количество экземпляров для покупки: ");
+                    quantityToSell = scanner.nextInt();
+                    this.shopManage.sellComic(comicName, authorName, quantityToSell);
+                    this.printMainMenu();
+                    break;
+                case 5:
+                    System.out.print("Введите стоимость комикса: ");
+                    int price = scanner.nextInt();
+                    System.out.print("Введите количество экземпляров для покупки: ");
+                    int quantityToBuy = scanner.nextInt();
+                    if (this.shopManage.canBuyNewComic(price, quantityToBuy)) this.gotNewComic(price, quantityToBuy);
+                    else System.out.println("Покупка невозможна: недостаточно средств.");
+                    this.printMainMenu();
+                    break;
+                case 6:
+                    System.out.print("Введите название комикса: ");
+                    comicName = scanner.next();
+                    System.out.print("Введите имя автора: ");
+                    authorName = scanner.next();
+                    this.shopManage.shop.assortmentManage.positionRemove(this.shopManage.shop.assortmentManage.findComicInAssortment(comicName, authorName));
+                    this.printMainMenu();
+                    break;
+                case 7:
                     break;
                 default:
+                    System.out.print("Ошибка: неверный номер. Попробуйте снова: ");
                     break;
             }
         }
     }
 
+    //Вывод меню поиска
     public void comicSearch() {
-        System.out.println("\nКакой поиск вы хотите провести? \n1. По названию \n2. По автору \n3. По жанру \n4. В главное меню");
+        System.out.print("\nКакой поиск вы хотите провести? \n1. По названию \n2. По автору \n3. По жанру \n4. В главное меню\nВведите ваш выбор: ");
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
         while (!(choice >= 1 && choice <= 4)) {
             choice = scanner.nextInt();
             switch (choice) {
                 case 1:
-                    System.out.println("Введите название комикса: ");
+                    System.out.print("Введите название комикса: ");
                     this.shopManage.shop.assortmentManage.searchByName(scanner.next());
                     break;
                 case 2:
-                    System.out.println("Введите имя автора: ");
-                    this.shopManage.shop.assortmentManage.searchByAuthor(scanner.next());
+                    System.out.print("Введите имя автора: ");
+                    scanner.nextLine();
+                    scanner.reset();
+                    String authorName = scanner.nextLine();
+                    this.shopManage.shop.assortmentManage.searchByAuthor(authorName);
                     break;
                 case 3:
-                    System.out.println("Введите жанр: ");
+                    System.out.print("Введите жанр: ");
                     this.shopManage.shop.assortmentManage.searchByGenre(scanner.next());
                     break;
                 case 4:
@@ -74,6 +106,7 @@ public class Interface {
         }
     }
 
+    //Добавление нового комикса
     public void gotNewComic(float price, int quantityToBuy) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введите название комикса: ");

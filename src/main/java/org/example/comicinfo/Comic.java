@@ -74,7 +74,9 @@ public class Comic {
         this.isASequel = isASequel;
         this.inASeries = inASeries;
         SeriesManage seriesManage = new SeriesManage();
-        this.series = seriesManage.newSeries(seriesName,author,this);
+        this.series = seriesManage.findSeries(seriesName,author.getName());
+        if (this.series == null) this.series = seriesManage.newSeries(seriesName,author,this);
+        else seriesManage.addComicToSeries(this.series, this);
     }
     public Comic(String name, String authorName, String publisher, int numberOfPages, String genre,
                  int releaseYear, float costPrice, float sellingPrice, boolean isASequel, boolean inASeries, String seriesName) {
@@ -90,7 +92,9 @@ public class Comic {
         AuthorManage authorManage = new AuthorManage();
         this.author = authorManage.newAuthor(authorName, this);
         SeriesManage seriesManage = new SeriesManage();
-        this.series = seriesManage.newSeries(seriesName,author,this);
+        this.series = seriesManage.findSeries(seriesName,author.getName());
+        if (this.series == null) this.series = seriesManage.newSeries(seriesName,author,this);
+        else seriesManage.addComicToSeries(this.series, this);
     }
 
     @Override

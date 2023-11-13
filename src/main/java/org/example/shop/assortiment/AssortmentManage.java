@@ -3,7 +3,6 @@ package org.example.shop.assortiment;
 import org.example.comicinfo.Comic;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class AssortmentManage {
     ArrayList<AssortmentPosition> assortment;
@@ -28,6 +27,7 @@ public class AssortmentManage {
         }
         return null;
     }
+    //Находит позицию в ассортименте
     public AssortmentPosition findComicInAssortment(Comic comic) {
         if (this.assortment == null) return null;
         else {
@@ -40,7 +40,7 @@ public class AssortmentManage {
         return null;
     }
 
-    //Пополняет позцию комиксов при поступлении новой партии.
+    //Пополняет позцию комиксов при поступлении новой партии
     public void fillPosition(AssortmentPosition position, int quantity) {
         position.setAvailable(position.getAvailable() + quantity);
     }
@@ -48,17 +48,14 @@ public class AssortmentManage {
     //Добавляет новый комикс в ассортимент
     public void addNewComic(Comic comic, int quantity) {
         if (findComicInAssortment(comic.getName(), comic.getAuthor().getName()) == null)
-            assortment.add(new AssortmentPosition(comic, quantity));
+            if (this.assortment==null){
+                this.assortment = new ArrayList<>();
+                this.assortment.add(new AssortmentPosition(comic, quantity));
+            }
+            else this.assortment.add(new AssortmentPosition(comic, quantity));
         else {
             this.fillPosition(findComicInAssortment(comic.getName(), comic.getAuthor().getName()), quantity);
         }
-    }
-
-
-
-    //Удаляет комикс из ассортимента
-    public void deletePosition(AssortmentPosition position) {
-        this.assortment.remove(position);
     }
 
     //Покупка комикса. Проверка возможности, в случае успеха уменьшение количества в ассортименте
@@ -76,11 +73,11 @@ public class AssortmentManage {
             } else if (quantity > position.getAvailable()) { //Если недостаточно экземпляров
                 this.notEnoughAvailable();
                 earnings = position.getComic().getSellingPrice() * position.getAvailable();
-                this.deletePosition(position);
+                this.positionRemove(position);
                 return earnings;
             } else { //Если ровное количество
                 earnings = position.getComic().getSellingPrice() * quantity;
-                this.deletePosition(position);
+                this.positionRemove(position);
                 return earnings;
             }
         }
@@ -104,7 +101,7 @@ public class AssortmentManage {
     //Поиск по названию
     public void searchByName(String comicName) {
         for (AssortmentPosition assortmentPosition : this.assortment) {
-            if (assortmentPosition.getComic().getName().toLowerCase() == comicName.toLowerCase())
+            if (assortmentPosition.getComic().getName().toLowerCase().equals(comicName.toLowerCase()))
                 System.out.println(assortmentPosition.getComic());
         }
     }
@@ -112,19 +109,23 @@ public class AssortmentManage {
     //Поиск по автору
     public void searchByAuthor(String authorName) {
         for (AssortmentPosition assortmentPosition : this.assortment) {
-            if (assortmentPosition.getComic().getAuthor().getName().toLowerCase() == authorName.toLowerCase())
+            if (assortmentPosition.getComic().getAuthor().getName().toLowerCase().equals(authorName.toLowerCase()))
                 System.out.println(assortmentPosition.getComic());
+
         }
     }
 
     //Поиск по жанру
     public void searchByGenre(String genre) {
         for (AssortmentPosition assortmentPosition : this.assortment) {
-            if (assortmentPosition.getComic().getGenre().toLowerCase() == genre.toLowerCase())
+            if (assortmentPosition.getComic().getGenre().toLowerCase().equals(genre.toLowerCase()))
                 System.out.println(assortmentPosition.getComic());
         }
     }
 
+    public void showAssortment(){
+        for (AssortmentPosition assortmentPosition :this.assortment) System.out.println(assortmentPosition);
+    }
     public ArrayList<AssortmentPosition> getAssortment() {
         return assortment;
     }

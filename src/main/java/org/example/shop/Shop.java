@@ -20,6 +20,10 @@ public class Shop {
     public SeriesManage seriesManage = new SeriesManage(this.series);
 
     public Shop() {
+        cash = 0;
+        assortment = new ArrayList<>();
+        authors = new ArrayList<>();
+        series = new ArrayList<>();
     }
 
     public Shop(ArrayList<AssortmentPosition> assortments, double cash) {

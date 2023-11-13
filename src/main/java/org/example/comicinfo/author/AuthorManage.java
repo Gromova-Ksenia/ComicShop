@@ -14,6 +14,7 @@ public class AuthorManage {
         this.authors = authors;
     }
 
+    //Поиск автора в каталоге авторов
     public Author findAuthor(String authorName) {
         for (Author author : this.authors) {
             if (authorName == author.getName()) return author;
@@ -21,9 +22,12 @@ public class AuthorManage {
         return null;
     }
 
+    //Добавление нового автора в каталог
     public void addAuthorToList(Author author){
         this.authors.add(author);
     }
+
+    //Создание нового автора, добавление в каталог
     public Author newAuthor(String name, Comic comic) {
         Author author = new Author(name);
         author.setComicPublished(new ArrayList<>()) ;
@@ -31,6 +35,7 @@ public class AuthorManage {
         return author;
     }
 
+    //Добавление новой работы автору
     public void newWork(Author author, Comic comic){
         author.addNewPublishedComic(comic);
     }
